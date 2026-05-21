@@ -1,0 +1,112 @@
+.create-tenant-modal {
+  max-width: 600px;
+  width: 100%;
+}
+
+.create-tenant-body {
+  display: flex !important;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.create-tenant-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.create-tenant-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.create-tenant-field label.pf-label {
+  font-size: 12px;
+  margin: 0;
+}
+
+.create-tenant-grid .col-span-2 {
+  grid-column: span 2;
+}
+
+.create-tenant-section-label {
+  margin-bottom: 12px !important;
+}
+
+.create-tenant-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.create-tenant-input:focus {
+  outline: none;
+  border-color: var(--bright-blue);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.plan-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.plan-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  cursor: pointer;
+  background: var(--bg-secondary);
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-card:hover {
+  border-color: var(--border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.plan-card-icon {
+  font-size: 20px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+
+.plan-card-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.plan-card-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.4;
+  min-height: 34px;
+}
+
+.plan-features {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: auto;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
