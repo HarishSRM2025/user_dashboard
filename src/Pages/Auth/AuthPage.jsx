@@ -32,6 +32,20 @@ function getStrength(pw) {
 const STRENGTH_LABELS = ["", "Weak", "Fair", "Good", "Strong"];
 const STRENGTH_COLORS = ["", "fill-weak", "fill-fair", "fill-good", "fill-strong"];
 
+async function readApiResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  const message = await response.text();
+  return {
+    success: false,
+    message: message || `Request failed with status ${response.status}`,
+  };
+}
+
 function SignInSection({ isActive, onToggle, onSwitchToSignup }) {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -67,7 +81,7 @@ function SignInSection({ isActive, onToggle, onSwitchToSignup }) {
         body: JSON.stringify(form),
       });
 
-      const data = await response.json();
+      const data = await readApiResponse(response);
 
       if (response.ok) {
         localStorage.setItem("hrm_user_data", JSON.stringify(data));
@@ -245,7 +259,7 @@ function SignUpSection({ isActive, onToggle, onSwitchToSignin }) {
         body: JSON.stringify(form),
       });
 
-      const data = await response.json();
+      const data = await readApiResponse(response);
 
       if (response.ok) {
         localStorage.setItem("hrm_user_data", JSON.stringify(data));
