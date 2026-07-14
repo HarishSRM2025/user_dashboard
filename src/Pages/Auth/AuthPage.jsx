@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./auth.css";
 const authApiUrl = import.meta.env.VITE_AUTH_API_URL;
+console.log( authApiUrl);
 const MODULES = [
   { icon: "fa-users", label: "People" },
   { icon: "fa-clock", label: "Attendance" },
@@ -69,7 +70,7 @@ function SignInSection({ isActive, onToggle, onSwitchToSignup }) {
       alert("Please fill all fields");
       return;
     }
-
+    
     try {
       setLoading(true);
 
