@@ -190,7 +190,7 @@ const ViewUsersModal = ({ tenant, onClose }) => {
 
         <div className="modal-footer">
           <button className="btn btn-ghost" onClick={onClose}>Close</button>
-          <a className="btn btn-primary" style={{ textDecoration: 'none' }} title="View tenant" target="_blank" href={`${import.meta.env.VITE_TENANT_URL}${tenant.slug}`}>
+          <a className="btn btn-primary" style={{ textDecoration: 'none' }} title="View tenant" target="_blank" href={`${import.meta.env.VITE_TENANT_URL}${tenant.slug}/auth`}>
             <i className="fa-solid fa-arrow-up-right-from-square" /> View Tenant
           </a>
         </div>
