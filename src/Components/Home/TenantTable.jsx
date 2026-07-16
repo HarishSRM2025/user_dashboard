@@ -307,7 +307,7 @@ function TenantTable({ tenants, onView, onDelete }) {
                           >
                             <i className="fa-regular fa-eye" />
                           </button>
-                          <a className="row-action-btn" title="Go tenant" target="_blank" href={`${TENANT_URL}${t.slug}`}>
+                          <a className="row-action-btn" title="Go tenant" target="_blank" href={`${TENANT_URL}${t.slug}/auth`}>
                             <i className="fa-solid fa-arrow-up-right-from-square" />
                           </a>
                           <button
