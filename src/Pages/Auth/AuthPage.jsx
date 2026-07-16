@@ -91,7 +91,7 @@ function SignInSection({ isActive, onToggle, onSwitchToSignup }) {
         console.log("Saved User Data:", data);
 
         // Example redirect
-        window.location.href = "/home";
+        window.location.href = "/";
       } else {
         alert(data.message || "Login failed");
       }
