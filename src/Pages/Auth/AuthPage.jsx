@@ -299,7 +299,6 @@ function SignUpSection({ isActive, onToggle, onSwitchToSignin }) {
           <i className="fa-solid fa-chevron-down" />
         </div>
       </div>
-
       <div className="section-body">
         <div className="section-body-inner">
           <div className="form-body">
