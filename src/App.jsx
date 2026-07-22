@@ -5,15 +5,41 @@ import Hompage from './Pages/Home/Hompage';
 // import Topbar from './Components/Topbar/Topbar';
 
 function ProtectedRoute({ children }) {
-  const userData = localStorage.getItem('hrm_user_data');
+  const userDataStr = localStorage.getItem('hrm_user_data');
+  let hasUser = false;
+  if (userDataStr) {
+    try {
+      const userData = JSON.parse(userDataStr);
+      const token = userData?.data?.token || userData?.data?.data?.token || userData?.token;
+      if (token) {
+        hasUser = true;
+      }
+    } catch (e) {
+      console.error("Error parsing auth user data:", e);
+      localStorage.removeItem('hrm_user_data');
+    }
+  }
 
-  return userData ? children : <Navigate to="/signin" replace />;
+  return hasUser ? children : <Navigate to="/signin" replace />;
 }
 
 function PublicRoute({ children }) {
-  const userData = localStorage.getItem('hrm_user_data');
+  const userDataStr = localStorage.getItem('hrm_user_data');
+  let hasUser = false;
+  if (userDataStr) {
+    try {
+      const userData = JSON.parse(userDataStr);
+      const token = userData?.data?.token || userData?.data?.data?.token || userData?.token;
+      if (token) {
+        hasUser = true;
+      }
+    } catch (e) {
+      console.error("Error parsing auth user data:", e);
+      localStorage.removeItem('hrm_user_data');
+    }
+  }
 
-  return userData ? <Navigate to="/home" replace /> : children;
+  return hasUser ? <Navigate to="/home" replace /> : children;
 }
 
 function App() {
