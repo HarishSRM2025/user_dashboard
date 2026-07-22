@@ -8,10 +8,11 @@ const Topbar = () => {
   if (userDataStr) {
     try {
       const userData = JSON.parse(userDataStr);
-      const user = userData?.data?.user || userData?.data?.data?.data?.user || userData?.user || userData?.data;
-      if (user && user.user_name) {
-        userName = user.user_name;
-        initials = user.user_name.charAt(0).toUpperCase();
+      const user = userData?.data?.data?.user || userData?.data?.data || userData?.data?.user || userData?.user;
+      const name = user?.user_name || user?.name;
+      if (name) {
+        userName = name;
+        initials = name.charAt(0).toUpperCase();
       }
     } catch (e) {
       console.error("Error parsing user data in Topbar:", e);
