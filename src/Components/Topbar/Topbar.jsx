@@ -27,12 +27,9 @@ const Topbar = () => {
           <span className="nav-logo-badge">HRMS</span>
         </div>
         <div className="nav-right">
-          {userName && (
-            <span className="nav-user-name" style={{ marginRight: '8px', fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
-              {userName}
-            </span>
-          )}
           <div className="nav-avatar" title="My account">{initials}</div>
+         
+          
           <button className="nav-icon-btn" title="Logout" onClick={() => {
             localStorage.removeItem('hrm_user_data');
             window.location.href = '/signin';
