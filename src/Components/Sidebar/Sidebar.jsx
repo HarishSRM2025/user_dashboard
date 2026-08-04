@@ -18,7 +18,7 @@ function Sidebar() {
     { icon: "fa-bell",        label: "Notifications",   path: "/home/notifications", active: false, badge: 3 },
     { icon: "fa-gear",        label: "Settings",        path: "/home/settings", active: false },
   ];
-  return (
+    return (
      <div className="tm-sidebar">
           <div className="sidebar-section-label">Main</div>
           {SIDEBAR_ITEMS.slice(0,5).map(item => (
@@ -47,16 +47,18 @@ function Sidebar() {
             </NavLink>
           ))}
           <div className="sidebar-footer">
-            <div className="sidebar-user">
-              <div className="sidebar-avatar">{initials}</div>
-              <div>
-                <div className="sidebar-name">{user?.user_name || 'User'}</div>
-                <div className="sidebar-email">{user?.user_email || ''}</div>
+            <div className="sidebar-user-row">
+              <div className="sidebar-user-left">
+                <div className="sidebar-avatar">{initials}</div>
+                <div>
+                  <div className="sidebar-name">{user?.user_name || 'User'}</div>
+                  <div className="sidebar-email">{user?.user_email || ''}</div>
+                </div>
               </div>
+              <button className="sidebar-logout-icon" title="Logout" onClick={() => { localStorage.removeItem('hrm_user_data'); window.location.replace('/signin'); }}>
+                <i className="fa-solid fa-arrow-right-from-bracket" />
+              </button>
             </div>
-            <button className="sidebar-logout" onClick={() => { localStorage.removeItem('hrm_user_data'); window.location.replace('/signin'); }}>
-              <i className="fa-solid fa-arrow-right-from-bracket" /> Logout
-            </button>
           </div>
    </div>
 

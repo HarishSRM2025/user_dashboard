@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { ACCENTS, applyAppearance, getStoredAccent, getStoredTheme } from '../../utils/appearance';
 
 const Topbar = () => {
   const userDataStr = localStorage.getItem('hrm_user_data');
   let userName = '';
   let initials = 'A';
+  const [theme, setTheme] = useState(getStoredTheme());
+  const [accent, setAccent] = useState(getStoredAccent());
   
   if (userDataStr) {
     try {
@@ -19,6 +22,10 @@ const Topbar = () => {
     }
   }
 
+  useEffect(() => {
+    applyAppearance(theme, accent);
+  }, [theme, accent]);
+
   return (
     <nav className="tm-nav">
         <div className="nav-brand">
@@ -27,21 +34,25 @@ const Topbar = () => {
           <span className="nav-logo-badge">HRMS</span>
         </div>
         <div className="nav-right">
+          <button className={`nav-chip ${theme === 'light' ? 'active' : ''}`} onClick={() => setTheme('light')}>Light</button>
+          <button className={`nav-chip ${theme === 'dark' ? 'active' : ''}`} onClick={() => setTheme('dark')}>Dark</button>
+          <div className="nav-accent-row">
+            {ACCENTS.map((item) => (
+              <button
+                key={item.key}
+                className={`nav-accent ${accent === item.key ? 'active' : ''}`}
+                style={{ background: item.value }}
+                onClick={() => setAccent(item.key)}
+                title={item.key}
+              />
+            ))}
+          </div>
           <div className="nav-avatar" title="My account">{initials}</div>
-         
-          
           <button className="nav-icon-btn" title="Logout" onClick={() => {
             localStorage.removeItem('hrm_user_data');
             window.location.replace('/signin');
           }}>
             <i className="fa-solid fa-arrow-right-from-bracket"></i>
-          </button>
-          <button className="nav-icon-btn" title="Notifications">
-            <i className="fa-regular fa-bell" />
-            <span className="nav-notif-dot" />
-          </button>
-          <button className="nav-icon-btn" title="Help">
-            <i className="fa-regular fa-circle-question" />
           </button>
         </div>
       </nav>
