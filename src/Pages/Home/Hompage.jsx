@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import "./homepage.css";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import Topbar from "../../Components/Topbar/Topbar";
@@ -120,6 +121,7 @@ function StatStrip({ tenants }) {
    ROOT PAGE
 ════════════════════════════════════ */
 export default function Homepage() {
+  const navigate = useNavigate();
   const [tenants,     setTenants]     = useState([]);
   const [viewTenant,  setViewTenant]  = useState(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -163,6 +165,26 @@ export default function Homepage() {
   useEffect(() => {
     fetchTenants();
   }, [fetchTenants]);
+
+  useEffect(() => {
+    const ensureAuth = () => {
+      const userDataStr = localStorage.getItem("hrm_user_data");
+      if (!userDataStr) {
+        navigate("/signin", { replace: true });
+        return false;
+      }
+
+      return true;
+    };
+
+    const handlePageShow = () => {
+      ensureAuth();
+    };
+
+    window.addEventListener("pageshow", handlePageShow);
+
+    return () => window.removeEventListener("pageshow", handlePageShow);
+  }, [navigate]);
 
   const handleRefresh = () => {
     fetchTenants();

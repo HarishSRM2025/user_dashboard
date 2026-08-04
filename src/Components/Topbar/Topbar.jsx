@@ -32,7 +32,7 @@ const Topbar = () => {
           
           <button className="nav-icon-btn" title="Logout" onClick={() => {
             localStorage.removeItem('hrm_user_data');
-            window.location.href = '/signin';
+            window.location.replace('/signin');
           }}>
             <i className="fa-solid fa-arrow-right-from-bracket"></i>
           </button>

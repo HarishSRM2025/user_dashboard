@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import AuthPage from './Pages/Auth/AuthPage';
 import Hompage from './Pages/Home/Hompage';
+import DashboardPage from './Pages/Dashboard/DashboardPage';
+import { applyAppearance, getStoredAccent, getStoredTheme } from './utils/appearance';
 // import Sidebar from './Components/Sidebar/Sidebar';
 // import Topbar from './Components/Topbar/Topbar';
 
@@ -43,6 +46,10 @@ function PublicRoute({ children }) {
 }
 
 function App() {
+  useEffect(() => {
+    applyAppearance(getStoredTheme(), getStoredAccent());
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -59,12 +66,17 @@ function App() {
           path="/home"
           element={
             <ProtectedRoute>
-              {/* <Topbar />
-              <Sidebar /> */}
               <Hompage />
             </ProtectedRoute>
           }
         />
+
+        <Route path="/home/subscriptions" element={<ProtectedRoute><DashboardPage pageKey="subscriptions" /></ProtectedRoute>} />
+        <Route path="/home/analytics" element={<ProtectedRoute><DashboardPage pageKey="analytics" /></ProtectedRoute>} />
+        <Route path="/home/billing" element={<ProtectedRoute><DashboardPage pageKey="billing" /></ProtectedRoute>} />
+        <Route path="/home/notifications" element={<ProtectedRoute><DashboardPage pageKey="notifications" /></ProtectedRoute>} />
+        <Route path="/home/settings" element={<ProtectedRoute><DashboardPage pageKey="settings" /></ProtectedRoute>} />
+        <Route path="/home/profile" element={<ProtectedRoute><DashboardPage pageKey="profile" /></ProtectedRoute>} />
 
         <Route
           path="*"
