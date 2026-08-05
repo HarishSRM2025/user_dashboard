@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { ACCENTS, applyAppearance, getStoredAccent, getStoredTheme } from '../../utils/appearance';
+import ProfileModal from '../Profile/ProfileModal';
 
 const Topbar = () => {
   const userDataStr = localStorage.getItem('hrm_user_data');
@@ -7,7 +8,8 @@ const Topbar = () => {
   let initials = 'A';
   const [theme, setTheme] = useState(getStoredTheme());
   const [accent, setAccent] = useState(getStoredAccent());
-  
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
   if (userDataStr) {
     try {
       const userData = JSON.parse(userDataStr);
@@ -27,7 +29,8 @@ const Topbar = () => {
   }, [theme, accent]);
 
   return (
-    <nav className="tm-nav">
+    <>
+      <nav className="tm-nav">
         <div className="nav-brand">
           <div className="nav-logo-mark"><i className="fa-solid fa-sitemap" /></div>
           <span className="nav-logo-text">PeopleOS</span>
@@ -43,11 +46,18 @@ const Topbar = () => {
                 className={`nav-accent ${accent === item.key ? 'active' : ''}`}
                 style={{ background: item.value }}
                 onClick={() => setAccent(item.key)}
-                title={item.key}
+                title={`Accent: ${item.key}`}
               />
             ))}
           </div>
-          <div className="nav-avatar" title="My account">{initials}</div>
+          <div 
+            className="nav-avatar" 
+            title="My Account & Password Settings"
+            onClick={() => setIsProfileOpen(true)}
+            style={{ cursor: 'pointer' }}
+          >
+            {initials}
+          </div>
           <button className="nav-icon-btn" title="Logout" onClick={() => {
             localStorage.removeItem('hrm_user_data');
             window.location.replace('/signin');
@@ -56,7 +66,12 @@ const Topbar = () => {
           </button>
         </div>
       </nav>
-  )
-}
 
-export default Topbar
+      {isProfileOpen && (
+        <ProfileModal onClose={() => setIsProfileOpen(false)} />
+      )}
+    </>
+  );
+};
+
+export default Topbar;
