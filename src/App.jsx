@@ -1,11 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import './App.css';
 import AuthPage from './Pages/Auth/AuthPage';
 import Hompage from './Pages/Home/Hompage';
 import DashboardPage from './Pages/Dashboard/DashboardPage';
 import { applyAppearance, getStoredAccent, getStoredTheme } from './utils/appearance';
-// import Sidebar from './Components/Sidebar/Sidebar';
-// import Topbar from './Components/Topbar/Topbar';
 
 function ProtectedRoute({ children }) {
   const userDataStr = localStorage.getItem('hrm_user_data');
