@@ -24,7 +24,8 @@ export default function ProfilePage() {
     console.error(e);
   }
 
-  const initials = (user?.user_name || 'U').slice(0, 2).toUpperCase();
+  const rawName = user?.user_name || user?.name || user?.email || 'User';
+  const initials = String(rawName).trim().slice(0, 2).toUpperCase();
 
   const handleAppearanceChange = (newTheme, newAccent) => {
     setTheme(newTheme);
