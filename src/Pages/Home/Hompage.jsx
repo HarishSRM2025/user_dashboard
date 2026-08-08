@@ -126,6 +126,7 @@ export default function Homepage() {
   const [isRefreshing,   setIsRefreshing]   = useState(false);
   const [tenantToDelete, setTenantToDelete] = useState(null);
   const [isDeleting,     setIsDeleting]     = useState(false);
+  const [isLoaded,       setIsLoaded]       = useState(false);
 
   // Map API fields to table expectations
   const mapApiTenantToTable = (t) => ({
@@ -157,6 +158,7 @@ export default function Homepage() {
       console.error("Failed to fetch tenants:", error);
     } finally {
       setIsRefreshing(false);
+      setIsLoaded(true);
     }
   }, []);
 
@@ -263,35 +265,51 @@ export default function Homepage() {
       <Sidebar />
       <div className="tm-main-wrapper">
         <Topbar />
-        <main className="tm-main">
-          {/* Page header */}
-          <div className="page-header">
-            <div className="page-header-left">
-              <div className="page-breadcrumb">
-                <span>PeopleOS</span>
-                <i className="fa-solid fa-chevron-right" />
-                <span className="bc-current">Tenant Management</span>
-              </div>
-              <h1 className="page-title">Tenant Management</h1>
-              <p className="page-subtitle">
-                Create, configure, and monitor all organisations on your platform
-              </p>
+        <main
+          className="tm-main"
+          style={{
+            minWidth: 0,
+            background: 'var(--bg)',
+          }}
+        >
+          <section
+            className="ud-page-header"
+            style={{
+              marginBottom: '22px',
+              padding: '24px',
+              border: '1px solid var(--border)',
+              borderRadius: '18px',
+              background: 'var(--white)',
+              boxShadow: 'var(--shadow-sm)',
+            }}
+          >
+            <div className="ud-page-title-group">
+              <div className="eyebrow">Workspace</div>
+              <h1>Tenant Management</h1>
+              <p>Monitor your organizations, usage, and tenant access from one place.</p>
             </div>
-            <div className="page-header-right">
-              <button className="btn btn-ghost" onClick={handleRefresh} disabled={isRefreshing}>
+            <div className="ud-action-bar">
+              <button className="ud-btn ud-btn-secondary" onClick={handleRefresh} disabled={isRefreshing}>
                 <i className={`fa-solid fa-rotate ${isRefreshing ? 'fa-spin' : ''}`} /> Refresh
               </button>
-              <button className="btn btn-primary" onClick={() => setIsCreateOpen(true)}>
+              <button className="ud-btn ud-btn-primary" onClick={() => setIsCreateOpen(true)}>
                 <i className="fa-solid fa-plus" /> New Tenant
               </button>
             </div>
-          </div>
+          </section>
 
-          {/* Stats */}
-          <StatStrip tenants={tenants} />
+          <section style={{ marginBottom: '22px' }}>
+            {!isLoaded ? (
+              <div className="ud-card" style={{ padding: '28px', textAlign: 'center' }}>
+                <i className="fa-solid fa-spinner fa-spin" style={{ fontSize: '18px', color: 'var(--primary)' }} />
+                <p style={{ margin: '12px 0 0', color: 'var(--muted)' }}>Loading tenant dashboard...</p>
+              </div>
+            ) : (
+              <StatStrip tenants={tenants} />
+            )}
+          </section>
 
-          {/* Content grid */}
-          <div className="content-grid">
+          <div className="content-grid" style={{ display: 'grid', gap: '20px' }}>
             <TenantTable
               tenants={tenants}
               onView={setViewTenant}
