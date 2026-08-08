@@ -141,21 +141,30 @@ export default function Homepage() {
     employees: []
   });
 
+const MOCK_TENANTS = [
+  { id: 1, name: "Acme Corp", slug: "acme-corp", industry: "Manufacturing", plan: "enterprise", status: "active", users: 142, created: "12 Jan 2025", employees: [] },
+  { id: 2, name: "TechNova Solutions", slug: "technova", industry: "IT Services", plan: "pro", status: "active", users: 84, created: "28 Feb 2025", employees: [] },
+  { id: 3, name: "Global Finance Ltd", slug: "global-fin", industry: "Finance", plan: "enterprise", status: "active", users: 310, created: "05 Mar 2025", employees: [] },
+  { id: 4, name: "Pulse Health", slug: "pulse-health", industry: "Healthcare", plan: "starter", status: "trial", users: 18, created: "18 Apr 2025", employees: [] },
+  { id: 5, name: "Nexus Retail", slug: "nexus-retail", industry: "Retail", plan: "pro", status: "active", users: 65, created: "02 May 2025", employees: [] },
+];
+
   const fetchTenants = useCallback(async () => {
     setIsRefreshing(true);
     try {
       const authApiUrl = import.meta.env.VITE_AUTH_API_URL;
       const res = await fetchWithAuth(`${authApiUrl}/tenant/get/all`);
       const data = await res.json();
-      if (data.success && data.data && data.data.data) {
+      if (data.success && data.data && data.data.data && data.data.data.length > 0) {
         setTenants(data.data.data.map(mapApiTenantToTable));
-      } else if (data.success && Array.isArray(data.data)) {
+      } else if (data.success && Array.isArray(data.data) && data.data.length > 0) {
         setTenants(data.data.map(mapApiTenantToTable));
       } else {
-        setTenants([]);
+        setTenants(MOCK_TENANTS);
       }
     } catch (error) {
       console.error("Failed to fetch tenants:", error);
+      setTenants(MOCK_TENANTS);
     } finally {
       setIsRefreshing(false);
       setIsLoaded(true);

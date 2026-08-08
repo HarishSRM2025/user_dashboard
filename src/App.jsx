@@ -17,13 +17,11 @@ function ProtectedRoute({ children }) {
   if (userDataStr) {
     try {
       const userData = JSON.parse(userDataStr);
-      const token = userData?.data?.token || userData?.data?.data?.token || userData?.token;
-      if (token) {
+      if (userData && (userData.success !== false) && (userData.data || userData.user || userData.token || userData.id || userData.user_email)) {
         hasUser = true;
       }
     } catch (e) {
       console.error("Error parsing auth user data:", e);
-      localStorage.removeItem('hrm_user_data');
     }
   }
 
@@ -36,13 +34,11 @@ function PublicRoute({ children }) {
   if (userDataStr) {
     try {
       const userData = JSON.parse(userDataStr);
-      const token = userData?.data?.token || userData?.data?.data?.token || userData?.token;
-      if (token) {
+      if (userData && (userData.success !== false) && (userData.data || userData.user || userData.token || userData.id || userData.user_email)) {
         hasUser = true;
       }
     } catch (e) {
       console.error("Error parsing auth user data:", e);
-      localStorage.removeItem('hrm_user_data');
     }
   }
 
@@ -57,6 +53,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        
         <Route
           path="/signin"
           element={
@@ -84,7 +82,7 @@ function App() {
 
         <Route
           path="*"
-          element={<Navigate to="/signin" replace />}
+          element={<Navigate to="/home" replace />}
         />
       </Routes>
     </BrowserRouter>

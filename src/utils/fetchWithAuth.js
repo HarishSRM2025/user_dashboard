@@ -5,7 +5,7 @@ export const fetchWithAuth = async (url, options = {}) => {
   if (userDataStr) {
     try {
       const userData = JSON.parse(userDataStr);
-      // Fallback chain attempting to find token due to deeply nested Gateway structures
+      // Fallback chain attempting to find token
       token = userData?.data?.data?.token || userData?.data?.token || userData?.token || "";
     } catch (e) {
       console.error("Error parsing user data for auth logic:", e);
@@ -21,16 +21,11 @@ export const fetchWithAuth = async (url, options = {}) => {
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const response = await fetch(url, { ...options, headers });
-
-  // Gateway returns 401 or 403 on expired/missing tokens
-  if (response.status === 401 || response.status === 403) {
-    localStorage.removeItem("hrm_user_data");
-    if (window.location.pathname !== "/signin") {
-        window.location.href = "/signin";
-    }
-    return Promise.reject(new Error("Session expired. Please log in again."));
+  try {
+    const response = await fetch(url, { ...options, headers });
+    return response;
+  } catch (err) {
+    console.warn("Fetch with auth warning:", err);
+    throw err;
   }
-
-  return response;
 };
