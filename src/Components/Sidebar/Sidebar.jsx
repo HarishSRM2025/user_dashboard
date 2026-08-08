@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 function Sidebar() {
   const navigate = useNavigate();
+
   const userDataStr = localStorage.getItem('hrm_user_data');
   let user = {};
   try {
@@ -12,80 +13,125 @@ function Sidebar() {
     console.error(e);
   }
 
-  const initials = (user?.user_name || 'User').slice(0, 2).toUpperCase();
+  const userName = user?.user_name || 'User';
+  const initials = userName.slice(0, 2).toUpperCase();
 
-  const SIDEBAR_ITEMS = [
-    { icon: "fa-building",    label: "Tenants",         path: "/home", active: true },
-    { icon: "fa-sliders",     label: "Subscriptions",   path: "/home/subscriptions", active: false },
-    { icon: "fa-chart-bar",   label: "Analytics",       path: "/home/analytics", active: false },
-    { icon: "fa-file-invoice",label: "Billing",         path: "/home/billing", active: false },
-    { icon: "fa-bell",        label: "Notifications",   path: "/home/notifications", active: false, badge: 3 },
-    { icon: "fa-gear",        label: "Settings",        path: "/home/settings", active: false },
+  const MAIN_ITEMS = [
+    { icon: 'fa-solid fa-house',          label: 'Dashboard',      path: '/home', exact: true },
+    { icon: 'fa-solid fa-building',       label: 'Tenants',        path: '/home', exact: true },
+    { icon: 'fa-solid fa-layer-group',    label: 'Subscriptions',  path: '/home/subscriptions' },
+  ];
+
+  const METRICS_ITEMS = [
+    { icon: 'fa-solid fa-chart-column',   label: 'Analytics',      path: '/home/analytics' },
+    { icon: 'fa-solid fa-credit-card',    label: 'Billing',        path: '/home/billing' },
+    { icon: 'fa-solid fa-bell',           label: 'Notifications',  path: '/home/notifications', badge: 3 },
+  ];
+
+  const SYSTEM_ITEMS = [
+    { icon: 'fa-solid fa-gear',           label: 'Settings',       path: '/home/settings' },
+    { icon: 'fa-solid fa-user',           label: 'My Profile',     path: '/home/profile' },
   ];
 
   return (
-    <div className="tm-sidebar">
-      <div className="sidebar-section-label" style={{ padding: '0 8px', margin: '8px 0 4px 0', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', color: 'var(--muted)' }}>
-        Main Menu
-      </div>
-      {SIDEBAR_ITEMS.slice(0, 5).map(item => (
-        <NavLink
-          to={item.path}
-          key={item.label}
-          className={({ isActive }) => `sidebar-item ${isActive ? "active" : ""}`}
-          style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 14px', borderRadius: '10px', textDecoration: 'none' }}
-        >
-          <i className={`fa-solid ${item.icon}`} style={{ width: '18px', textAlign: 'center' }} />
-          <span style={{ flex: 1 }}>{item.label}</span>
-          {item.badge && <span className="sidebar-badge">{item.badge}</span>}
-        </NavLink>
-      ))}
-
-      <div className="sidebar-divider" style={{ borderTop: '1px solid var(--border)', margin: '12px 0' }} />
-      
-      <div className="sidebar-section-label" style={{ padding: '0 8px', margin: '8px 0 4px 0', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', color: 'var(--muted)' }}>
-        System
-      </div>
-      {SIDEBAR_ITEMS.slice(5).map(item => (
-        <NavLink
-          to={item.path}
-          key={item.label}
-          className={({ isActive }) => `sidebar-item ${isActive ? "active" : ""}`}
-          style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 14px', borderRadius: '10px', textDecoration: 'none' }}
-        >
-          <i className={`fa-solid ${item.icon}`} style={{ width: '18px', textAlign: 'center' }} />
-          <span style={{ flex: 1 }}>{item.label}</span>
-          {item.badge && <span className="sidebar-badge">{item.badge}</span>}
-        </NavLink>
-      ))}
-
-      <div className="sidebar-footer">
-        <div className="sidebar-user-row">
-          <div 
-            className="sidebar-user-left" 
-            onClick={() => navigate('/home/profile')}
-            style={{ cursor: 'pointer' }}
-            title="View Profile & Settings"
-          >
-            <div className="sidebar-avatar">{initials}</div>
-            <div>
-              <div className="sidebar-name">{user?.user_name || 'User'}</div>
-              <div className="sidebar-email">{user?.user_email || ''}</div>
-            </div>
-          </div>
-          <button 
-            className="sidebar-logout-icon" 
-            title="Logout" 
-            onClick={() => { 
-              localStorage.removeItem('hrm_user_data'); 
-              window.location.replace('/signin'); 
-            }}
-          >
-            <i className="fa-solid fa-arrow-right-from-bracket" />
-          </button>
+    <aside className="ud-sidebar">
+      {/* Logo Header */}
+      <div className="ud-sidebar-header">
+        <div className="ud-sidebar-logo-icon">
+          <i className="fa-solid fa-sitemap" />
+        </div>
+        <div className="ud-sidebar-brand">
+          <span className="ud-sidebar-brand-name">PeopleOS</span>
+          <span className="ud-sidebar-brand-badge">HRMS</span>
         </div>
       </div>
-    </div>
+
+      {/* Navigation */}
+      <nav className="ud-sidebar-nav">
+        <div className="ud-menu-section">MAIN MENU</div>
+        {MAIN_ITEMS.map(item => (
+          <NavLink
+            key={item.label}
+            to={item.path}
+            end={item.exact}
+            className={({ isActive }) => `ud-menu-item ${isActive ? 'active' : ''}`}
+          >
+            <span className="ud-menu-icon"><i className={item.icon} /></span>
+            <span className="ud-menu-label">{item.label}</span>
+            {item.badge && <span className="ud-menu-badge">{item.badge}</span>}
+          </NavLink>
+        ))}
+
+        <div className="ud-menu-section" style={{ marginTop: '16px' }}>FINANCE &amp; METRICS</div>
+        {METRICS_ITEMS.map(item => (
+          <NavLink
+            key={item.label}
+            to={item.path}
+            end={item.exact}
+            className={({ isActive }) => `ud-menu-item ${isActive ? 'active' : ''}`}
+          >
+            <span className="ud-menu-icon"><i className={item.icon} /></span>
+            <span className="ud-menu-label">{item.label}</span>
+            {item.badge && <span className="ud-menu-badge">{item.badge}</span>}
+          </NavLink>
+        ))}
+
+        <div className="ud-menu-section" style={{ marginTop: '16px' }}>SYSTEM &amp; PREFERENCES</div>
+        {SYSTEM_ITEMS.map(item => (
+          <NavLink
+            key={item.label}
+            to={item.path}
+            end={item.exact}
+            className={({ isActive }) => `ud-menu-item ${isActive ? 'active' : ''}`}
+          >
+            <span className="ud-menu-icon"><i className={item.icon} /></span>
+            <span className="ud-menu-label">{item.label}</span>
+          </NavLink>
+        ))}
+
+        {/* System Health / Active Plan Status Widget */}
+        <div className="ud-sidebar-widget" style={{ marginTop: '20px' }}>
+          <div className="ud-sidebar-widget-title">Active Plan</div>
+          <div className="ud-sidebar-widget-val">
+            <span className="ud-sidebar-widget-dot" /> Enterprise Pro
+          </div>
+          <div style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '4px' }}>
+            24 / 30 Seats Used
+          </div>
+          <div className="ud-meter-track" style={{ marginTop: '8px', height: '5px' }}>
+            <div className="ud-meter-fill" style={{ width: '80%' }} />
+          </div>
+        </div>
+      </nav>
+
+      {/* User Footer */}
+      <div className="ud-sidebar-footer">
+        <div
+          className="ud-sidebar-user"
+          onClick={() => navigate('/home/profile')}
+          title="View Profile & Settings"
+        >
+          <div className="ud-sidebar-user-avatar">{initials}</div>
+          <div className="ud-sidebar-user-info">
+            <div className="ud-sidebar-user-name">{userName}</div>
+            <div className="ud-sidebar-user-sub">Account Settings</div>
+          </div>
+          <i className="fa-solid fa-chevron-right ud-sidebar-user-arrow" />
+        </div>
+
+        <button
+          className="ud-sidebar-logout"
+          title="Logout"
+          onClick={() => {
+            localStorage.removeItem('hrm_user_data');
+            window.location.replace('/signin');
+          }}
+        >
+          <i className="fa-solid fa-arrow-right-from-bracket" />
+          Sign out
+        </button>
+      </div>
+    </aside>
   );
 }
 

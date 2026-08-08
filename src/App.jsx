@@ -3,7 +3,12 @@ import { useEffect } from 'react';
 import './App.css';
 import AuthPage from './Pages/Auth/AuthPage';
 import Hompage from './Pages/Home/Hompage';
-import DashboardPage from './Pages/Dashboard/DashboardPage';
+import SubscriptionsPage from './Pages/Subscriptions/SubscriptionsPage';
+import AnalyticsPage from './Pages/Analytics/AnalyticsPage';
+import BillingPage from './Pages/Billing/BillingPage';
+import NotificationsPage from './Pages/Notifications/NotificationsPage';
+import SettingsPage from './Pages/Settings/SettingsPage';
+import ProfilePage from './Pages/Profile/ProfilePage';
 import { applyAppearance, getStoredAccent, getStoredTheme } from './utils/appearance';
 
 function ProtectedRoute({ children }) {
@@ -70,12 +75,12 @@ function App() {
           }
         />
 
-        <Route path="/home/subscriptions" element={<ProtectedRoute><DashboardPage pageKey="subscriptions" /></ProtectedRoute>} />
-        <Route path="/home/analytics" element={<ProtectedRoute><DashboardPage pageKey="analytics" /></ProtectedRoute>} />
-        <Route path="/home/billing" element={<ProtectedRoute><DashboardPage pageKey="billing" /></ProtectedRoute>} />
-        <Route path="/home/notifications" element={<ProtectedRoute><DashboardPage pageKey="notifications" /></ProtectedRoute>} />
-        <Route path="/home/settings" element={<ProtectedRoute><DashboardPage pageKey="settings" /></ProtectedRoute>} />
-        <Route path="/home/profile" element={<ProtectedRoute><DashboardPage pageKey="profile" /></ProtectedRoute>} />
+        <Route path="/home/subscriptions" element={<ProtectedRoute><SubscriptionsPage /></ProtectedRoute>} />
+        <Route path="/home/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
+        <Route path="/home/billing" element={<ProtectedRoute><BillingPage /></ProtectedRoute>} />
+        <Route path="/home/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+        <Route path="/home/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+        <Route path="/home/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
         <Route
           path="*"
@@ -87,6 +92,3 @@ function App() {
 }
 
 export default App;
-
-// After successful signin/signup redirect using:
-// window.location.href = '/home';
