@@ -12,16 +12,16 @@ import { fetchWithAuth } from "../../utils/fetchWithAuth";
 /* ════════════════════════════════════
    SEED DATA
 ════════════════════════════════════ */
-  const AVATAR_COLORS = [
-    ["#3B82F6","#1E3A8A"],
-    ["#8B5CF6","#6D28D9"],
-    ["#10B981","#047857"],
-    ["#F59E0B","#B45309"],
-    ["#EF4444","#B91C1C"],
-    ["#06B6D4","#0E7490"],
-  ];
+const AVATAR_COLORS = [
+  ["#3B82F6","#1E3A8A"],
+  ["#8B5CF6","#6D28D9"],
+  ["#10B981","#047857"],
+  ["#F59E0B","#B45309"],
+  ["#EF4444","#B91C1C"],
+  ["#06B6D4","#0E7490"],
+];
 
-  const getColor = (i) => AVATAR_COLORS[i % AVATAR_COLORS.length];
+const getColor = (i) => AVATAR_COLORS[i % AVATAR_COLORS.length];
 
 const PLAN_META = {
   enterprise: { label: "Enterprise", cls: "plan-enterprise" },
@@ -115,19 +115,17 @@ function StatStrip({ tenants }) {
   );
 }
 
-
-
 /* ════════════════════════════════════
    ROOT PAGE
 ════════════════════════════════════ */
 export default function Homepage() {
   const navigate = useNavigate();
-  const [tenants,     setTenants]     = useState([]);
-  const [viewTenant,  setViewTenant]  = useState(null);
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [tenants,        setTenants]        = useState([]);
+  const [viewTenant,     setViewTenant]     = useState(null);
+  const [isCreateOpen,   setIsCreateOpen]   = useState(false);
+  const [isRefreshing,   setIsRefreshing]   = useState(false);
   const [tenantToDelete, setTenantToDelete] = useState(null);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleting,     setIsDeleting]     = useState(false);
 
   // Map API fields to table expectations
   const mapApiTenantToTable = (t) => ({
@@ -137,7 +135,7 @@ export default function Homepage() {
     industry: t.industry || "Manufacturing",
     plan: t.plan || "starter",
     status: t.status || "trial",
-    users: t.users || 0, 
+    users: t.users || 0,
     created: new Date(t.createdAt).toLocaleDateString("en-IN",{ day:"numeric", month:"short", year:"numeric" }),
     employees: []
   });
@@ -173,7 +171,6 @@ export default function Homepage() {
         navigate("/signin", { replace: true });
         return false;
       }
-
       return true;
     };
 
@@ -182,7 +179,6 @@ export default function Homepage() {
     };
 
     window.addEventListener("pageshow", handlePageShow);
-
     return () => window.removeEventListener("pageshow", handlePageShow);
   }, [navigate]);
 
@@ -201,37 +197,8 @@ export default function Homepage() {
       const ownerId = userData?.data?.data?.user?.id || userData?.data?.user?.id || userData?.data?.id || userData?.id;
 
       if (!ownerId) {
-         alert("Could not extract user ID from local storage.");
-         return;
-      }
-
-      const authApiUrl = import.meta.env.VITE_AUTH_API_URL;
-      const payload = {
-        tenant_name: form.tenantName,
-        slug: form.slug,
-        industry: form.industry,
-        plan: form.plan,
-        status: "trial",
-        tenant_owner_id: ownerId
-      };
-
-  const handleRefresh = () => {
-    fetchTenants();
-  };
-
-  const handleCreate = async (form) => {
-    try {
-      const userDataStr = localStorage.getItem('hrm_user_data');
-      if (!userDataStr) {
-        alert("User data not found in local storage. Please sign in again.");
+        alert("Could not extract user ID from local storage.");
         return;
-      }
-      const userData = JSON.parse(userDataStr);
-      const ownerId = userData?.data?.data?.user?.id || userData?.data?.user?.id || userData?.data?.id || userData?.id;
-
-      if (!ownerId) {
-         alert("Could not extract user ID from local storage.");
-         return;
       }
 
       const authApiUrl = import.meta.env.VITE_AUTH_API_URL;
@@ -254,7 +221,7 @@ export default function Homepage() {
         return;
       }
 
-      fetchTenants(); // Reload the updated list
+      fetchTenants();
     } catch (error) {
       console.error(error);
       alert("Error creating tenant");
@@ -264,8 +231,25 @@ export default function Homepage() {
   const handleDeleteClick = (tenant) => {
     setTenantToDelete(tenant);
   };
-      if (viewTenant?.id === tenantToDelete.id) setViewTenant(null); // Close view users modal if open
-      setTenantToDelete(null); // Close the delete confirmation modal
+
+  const confirmDelete = async () => {
+    if (!tenantToDelete) return;
+    setIsDeleting(true);
+
+    try {
+      const authApiUrl = import.meta.env.VITE_AUTH_API_URL;
+      const response = await fetchWithAuth(`${authApiUrl}/tenant/delete/${tenantToDelete.id}`, {
+        method: "DELETE",
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        alert(data.message || data.data?.message || "Failed to delete tenant");
+        setIsDeleting(false);
+        return;
+      }
+      fetchTenants();
+      if (viewTenant?.id === tenantToDelete.id) setViewTenant(null);
+      setTenantToDelete(null);
     } catch (error) {
       console.error("Delete Error:", error);
       alert("Error deleting tenant");
@@ -324,7 +308,7 @@ export default function Homepage() {
           onClose={() => setViewTenant(null)}
         />
       )}
-      
+
       {/* Create tenant modal */}
       {isCreateOpen && (
         <CreateTenantModal
