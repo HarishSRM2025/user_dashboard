@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import './App.css';
 import AuthPage from './Pages/Auth/AuthPage';
-import Hompage from './Pages/Home/Hompage';
+import Hompage from './Pages/Home/Homepage';
 import SubscriptionsPage from './Pages/Subscriptions/SubscriptionsPage';
 import AnalyticsPage from './Pages/Analytics/AnalyticsPage';
 import BillingPage from './Pages/Billing/BillingPage';
