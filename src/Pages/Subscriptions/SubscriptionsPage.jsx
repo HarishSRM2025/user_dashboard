@@ -8,9 +8,9 @@ export default function SubscriptionsPage() {
 
   return (
     <div className="tm-root">
-      <Topbar />
-      <div className="tm-body">
-        <Sidebar />
+      <Sidebar />
+      <div className="tm-main-wrapper">
+        <Topbar />
         <main className="tm-main">
           <div className="subscriptions-container">
             {/* Page Header */}

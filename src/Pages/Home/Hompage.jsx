@@ -214,6 +214,35 @@ export default function Homepage() {
         status: "trial",
         tenant_owner_id: ownerId
       };
+
+  const handleRefresh = () => {
+    fetchTenants();
+  };
+
+  const handleCreate = async (form) => {
+    try {
+      const userDataStr = localStorage.getItem('hrm_user_data');
+      if (!userDataStr) {
+        alert("User data not found in local storage. Please sign in again.");
+        return;
+      }
+      const userData = JSON.parse(userDataStr);
+      const ownerId = userData?.data?.data?.user?.id || userData?.data?.user?.id || userData?.data?.id || userData?.id;
+
+      if (!ownerId) {
+         alert("Could not extract user ID from local storage.");
+         return;
+      }
+
+      const authApiUrl = import.meta.env.VITE_AUTH_API_URL;
+      const payload = {
+        tenant_name: form.tenantName,
+        slug: form.slug,
+        industry: form.industry,
+        plan: form.plan,
+        status: "trial",
+        tenant_owner_id: ownerId
+      };
       const response = await fetchWithAuth(`${authApiUrl}/tenant/create`, {
         method: "POST",
         body: JSON.stringify(payload)
@@ -225,7 +254,7 @@ export default function Homepage() {
         return;
       }
 
-      fetchTenants(); // Reaload the updated list
+      fetchTenants(); // Reload the updated list
     } catch (error) {
       console.error(error);
       alert("Error creating tenant");
@@ -235,23 +264,6 @@ export default function Homepage() {
   const handleDeleteClick = (tenant) => {
     setTenantToDelete(tenant);
   };
-
-  const confirmDelete = async () => {
-    if (!tenantToDelete) return;
-    setIsDeleting(true);
-
-    try {
-      const authApiUrl = import.meta.env.VITE_AUTH_API_URL;
-      const response = await fetchWithAuth(`${authApiUrl}/tenant/delete/${tenantToDelete.id}`, {
-        method: "DELETE",
-      });
-      const data = await response.json();
-      if (!response.ok || !data.success) {
-        alert(data.message || data.data?.message || "Failed to delete tenant");
-        setIsDeleting(false);
-        return;
-      }
-      fetchTenants(); // Reload table
       if (viewTenant?.id === tenantToDelete.id) setViewTenant(null); // Close view users modal if open
       setTenantToDelete(null); // Close the delete confirmation modal
     } catch (error) {
@@ -262,20 +274,12 @@ export default function Homepage() {
     }
   };
 
-  
-
   return (
     <div className="tm-root">
-
-      {/* ── Navbar ── */}
-      <Topbar/>
-
-      <div className="tm-body">
-        <Sidebar />
-
-        {/* ── Main content ── */}
+      <Sidebar />
+      <div className="tm-main-wrapper">
+        <Topbar />
         <main className="tm-main">
-
           {/* Page header */}
           <div className="page-header">
             <div className="page-header-left">
@@ -304,15 +308,11 @@ export default function Homepage() {
 
           {/* Content grid */}
           <div className="content-grid">
-
-            {/* Left: tenant table */}
             <TenantTable
               tenants={tenants}
               onView={setViewTenant}
               onDelete={handleDeleteClick}
             />
-
-
           </div>
         </main>
       </div>
@@ -340,7 +340,6 @@ export default function Homepage() {
         onConfirm={confirmDelete}
         isDeleting={isDeleting}
       />
-      
     </div>
   );
 }

@@ -75,9 +75,9 @@ export default function ProfilePage() {
 
   return (
     <div className="tm-root">
-      <Topbar />
-      <div className="tm-body">
-        <Sidebar />
+      <Sidebar />
+      <div className="tm-main-wrapper">
+        <Topbar />
         <main className="tm-main">
           <div className="profile-container" style={{ maxWidth: '860px' }}>
             <div className="profile-page-header">
@@ -160,11 +160,30 @@ export default function ProfilePage() {
                   </div>
                   <div style={{ padding: '24px', display: 'flex', gap: '16px' }}>
                     <button className={`theme-toggle-btn ${theme === 'light' ? 'active' : ''}`} onClick={() => handleAppearanceChange('light', accent)}>
-                      Light Mode
+                      <i className="fa-regular fa-sun" style={{ marginRight: '8px' }} /> Light Mode
                     </button>
                     <button className={`theme-toggle-btn ${theme === 'dark' ? 'active' : ''}`} onClick={() => handleAppearanceChange('dark', accent)}>
-                      Dark Mode
+                      <i className="fa-regular fa-moon" style={{ marginRight: '8px' }} /> Dark Mode
                     </button>
+                  </div>
+                </div>
+
+                <div className="panel-card">
+                  <div className="panel-card-header">
+                    <i className="fa-solid fa-palette" />
+                    <h3>Primary Accent Color</h3>
+                  </div>
+                  <div style={{ padding: '24px', display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '12px' }}>
+                    {ACCENTS.map(item => (
+                      <button
+                        key={item.key}
+                        className={`ud-accent-swatch ${accent === item.key ? 'active' : ''}`}
+                        style={{ background: item.value, height: '54px', borderRadius: '12px', border: accent === item.key ? '2px solid var(--text)' : 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        onClick={() => handleAppearanceChange(theme, item.key)}
+                      >
+                        {accent === item.key && <i className="fa-solid fa-check" style={{ color: '#fff', fontSize: '16px' }} />}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>

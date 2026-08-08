@@ -18,9 +18,9 @@ export default function SettingsPage() {
 
   return (
     <div className="tm-root">
-      <Topbar />
-      <div className="tm-body">
-        <Sidebar />
+      <Sidebar />
+      <div className="tm-main-wrapper">
+        <Topbar />
         <main className="tm-main">
           <div className="settings-container">
             {/* Page Header */}

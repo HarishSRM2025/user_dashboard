@@ -18,7 +18,6 @@ function Sidebar() {
 
   const MAIN_ITEMS = [
     { icon: 'fa-solid fa-house',          label: 'Dashboard',      path: '/home', exact: true },
-    { icon: 'fa-solid fa-building',       label: 'Tenants',        path: '/home', exact: true },
     { icon: 'fa-solid fa-layer-group',    label: 'Subscriptions',  path: '/home/subscriptions' },
   ];
 
