@@ -3,7 +3,7 @@ import { fetchWithAuth } from "../../utils/fetchWithAuth";
 import CustomRoleSelect from './CustomRoleSelect';
 
 const AVATAR_COLORS = [
-  ["#3B82F6", "#1E3A8A"],
+  ["var(--primary)", "var(--primary)"],
   ["#8B5CF6", "#6D28D9"],
   ["#10B981", "#047857"],
   ["#F59E0B", "#B45309"],

@@ -38,7 +38,7 @@ export default function BillingPage() {
 
               <div className="ud-kpi-card">
                 <div className="ud-kpi-top">
-                  <div className="ud-kpi-icon" style={{ background: 'rgba(59,130,246,0.12)', color: '#3B82F6' }}>
+                  <div className="ud-kpi-icon" style={{ background: 'var(--primary-soft)', color: 'var(--primary)' }}>
                     <i className="fa-solid fa-calendar-minus" />
                   </div>
                   <span className="ud-kpi-badge up">Sept 12</span>

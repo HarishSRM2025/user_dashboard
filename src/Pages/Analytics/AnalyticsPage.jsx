@@ -40,7 +40,7 @@ export default function AnalyticsPage() {
             <div className="ud-kpi-grid">
               <div className="ud-kpi-card">
                 <div className="ud-kpi-top">
-                  <div className="ud-kpi-icon" style={{ background: 'rgba(59,130,246,0.12)', color: '#3B82F6' }}>
+                  <div className="ud-kpi-icon" style={{ background: 'var(--primary-soft)', color: 'var(--primary)' }}>
                     <i className="fa-solid fa-user-gear" />
                   </div>
                   <span className="ud-kpi-badge up"><i className="fa-solid fa-arrow-up" /> +14.2%</span>

@@ -58,10 +58,10 @@ export default function CustomRoleSelect({ role, onChange, disabled }) {
               onMouseLeave={(e) => { e.currentTarget.style.background = role === r ? "var(--bg-secondary)" : "transparent" }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span className={`badge-dot ${ROLE_META[r].cls.replace('role-', 'badge-')}`} style={{ background: r === 'admin' ? '#3B82F6' : r === 'manager' ? '#8B5CF6' : '#10B981', display:'inline-block', width:8, height:8, borderRadius:'50%' }} />
+                <span className={`badge-dot ${ROLE_META[r].cls.replace('role-', 'badge-')}`} style={{ background: r === 'admin' ? 'var(--primary)' : r === 'manager' ? '#8B5CF6' : '#10B981', display:'inline-block', width:8, height:8, borderRadius:'50%' }} />
                 {ROLE_META[r].label}
               </div>
-              {role === r && <i className="fa-solid fa-check" style={{ color: "var(--bright-blue)", fontSize: 12 }}/>}
+              {role === r && <i className="fa-solid fa-check" style={{ color: "var(--primary)", fontSize: 12 }}/>}
             </div>
           ))}
         </div>
