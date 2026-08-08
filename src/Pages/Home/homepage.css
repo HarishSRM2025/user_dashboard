@@ -90,7 +90,7 @@
   background: var(--bg);
   font-family: var(--font-body);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 /* ══════════════════════════════════════
@@ -1695,4 +1695,4 @@
   letter-spacing: 0.8px;
   color: var(--primary, #3B82F6);
   margin-bottom: 6px;
-}
+}
