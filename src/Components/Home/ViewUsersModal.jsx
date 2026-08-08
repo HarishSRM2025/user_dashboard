@@ -126,11 +126,11 @@ const ViewUsersModal = ({ tenant, onClose }) => {
             <div>
               <div className="modal-tenant-name">{tenant.name}</div>
               <div className="modal-tenant-meta">
-                <span className={`badge ${STATUS_META[tenant.status].cls}`}>
-                  <span className="badge-dot" />{STATUS_META[tenant.status].label}
+                <span className={`badge ${(STATUS_META[tenant.status?.toLowerCase()] || STATUS_META[tenant.status] || STATUS_META.trial).cls}`}>
+                  <span className="badge-dot" />{(STATUS_META[tenant.status?.toLowerCase()] || STATUS_META[tenant.status] || STATUS_META.trial).label}
                 </span>
-                <span className={`plan-badge ${PLAN_META[tenant.plan].cls}`}>
-                  {PLAN_META[tenant.plan].label}
+                <span className={`plan-badge ${(PLAN_META[tenant.plan?.toLowerCase()] || PLAN_META[tenant.plan] || PLAN_META.starter).cls}`}>
+                  {(PLAN_META[tenant.plan?.toLowerCase()] || PLAN_META[tenant.plan] || PLAN_META.starter).label}
                 </span>
                 <span style={{ color: "var(--text-muted)", fontSize: 11 }}>
                   <i className="fa-regular fa-calendar" style={{ marginRight: 4 }} />

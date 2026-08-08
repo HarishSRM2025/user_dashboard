@@ -227,8 +227,10 @@ function TenantTable({ tenants, onView, onDelete }) {
             <tbody>
               {filtered.map((t, idx) => {
                 const colors = getColor(idx);
-                const status = STATUS_META[t.status];
-                const plan = PLAN_META[t.plan];
+                const statusKey = (t.status || "trial").toString().toLowerCase();
+                const planKey = (t.plan || "starter").toString().toLowerCase();
+                const status = STATUS_META[statusKey] || STATUS_META[t.status] || { label: t.status || "Trial", cls: "badge-trial" };
+                const plan = PLAN_META[planKey] || PLAN_META[t.plan] || { label: t.plan || "Starter", cls: "plan-starter" };
                 const isOpen = expanded === t.id;
 
                 return (
