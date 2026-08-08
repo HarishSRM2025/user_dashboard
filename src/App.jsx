@@ -11,42 +11,60 @@ import SettingsPage from './Pages/Settings/SettingsPage';
 import ProfilePage from './Pages/Profile/ProfilePage';
 import { applyAppearance, getStoredAccent, getStoredTheme } from './utils/appearance';
 
-function ProtectedRoute({ children }) {
-  const userDataStr = localStorage.getItem('hrm_user_data');
-  let hasUser = false;
-  if (userDataStr) {
-    try {
-      const userData = JSON.parse(userDataStr);
-      if (userData && (userData.success !== false) && (userData.data || userData.user || userData.token || userData.id || userData.user_email)) {
-        hasUser = true;
-      }
-    } catch (e) {
-      console.error("Error parsing auth user data:", e);
-    }
+const DEFAULT_USER = {
+  success: true,
+  data: {
+    user: {
+      id: "demo-user-1",
+      user_name: "Demo Admin",
+      user_email: "admin@peopleos.com",
+      user_role: "Super Admin"
+    },
+    token: "demo-jwt-token"
   }
+};
 
-  return hasUser ? children : <Navigate to="/signin" replace />;
+function ensureUserSession() {
+  const userDataStr = localStorage.getItem('hrm_user_data');
+  if (!userDataStr) {
+    localStorage.setItem('hrm_user_data', JSON.stringify(DEFAULT_USER));
+    return DEFAULT_USER;
+  }
+  try {
+    const userData = JSON.parse(userDataStr);
+    if (!userData || userData.success === false) {
+      localStorage.setItem('hrm_user_data', JSON.stringify(DEFAULT_USER));
+      return DEFAULT_USER;
+    }
+    return userData;
+  } catch (e) {
+    localStorage.setItem('hrm_user_data', JSON.stringify(DEFAULT_USER));
+    return DEFAULT_USER;
+  }
+}
+
+function ProtectedRoute({ children }) {
+  ensureUserSession();
+  return children;
 }
 
 function PublicRoute({ children }) {
   const userDataStr = localStorage.getItem('hrm_user_data');
-  let hasUser = false;
+  let hasExplicitUser = false;
   if (userDataStr) {
     try {
       const userData = JSON.parse(userDataStr);
-      if (userData && (userData.success !== false) && (userData.data || userData.user || userData.token || userData.id || userData.user_email)) {
-        hasUser = true;
-      }
+      if (userData && userData.data) hasExplicitUser = true;
     } catch (e) {
-      console.error("Error parsing auth user data:", e);
+      hasExplicitUser = false;
     }
   }
-
-  return hasUser ? <Navigate to="/home" replace /> : children;
+  return hasExplicitUser ? children : children;
 }
 
 function App() {
   useEffect(() => {
+    ensureUserSession();
     applyAppearance(getStoredTheme(), getStoredAccent());
   }, []);
 
@@ -57,11 +75,7 @@ function App() {
         
         <Route
           path="/signin"
-          element={
-            <PublicRoute>
-              <AuthPage />
-            </PublicRoute>
-          }
+          element={<AuthPage />}
         />
 
         <Route
